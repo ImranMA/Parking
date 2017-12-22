@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<br />
+<div>
+    <p>Entry:</p>
+    <input type="text" id="entrydatetime24" data-format="DD-MM-YYYY HH:mm" data-template="DD / MM / YYYY     HH : mm" name="datetime">
+
+</div>
+
+<br />
+
+<div>
+    <p>Exit:</p>
+    <input type="text" id="exitdatetime24" data-format="DD-MM-YYYY HH:mm" data-template="DD / MM / YYYY     HH : mm" name="datetime">
+</div>
+
+
+<div><button type="button" onclick="PostDates();">Submit</button></div>
+<script>
+    $(function () {
+        $('#entrydatetime24').combodate({
+            minuteStep: 1,
+            firstItem: 'name',
+            maxYear: 2020,
+        });
+
+        $('#exitdatetime24').combodate({
+            minuteStep: 1,
+            firstItem: 'name',
+            maxYear: 2020,
+        });
+
+        //$('#exitdatetime24').combodate('getValue');
+        $('#entrydatetime24').combodate('setValue', new Date());
+        $('#exitdatetime24').combodate('setValue', new Date());
+    });
+
+    function PostDates() {
+       
+        
+        debugger
+        $.ajax({
+            type: "POST",
+            url: "/api/parking",
+            data: JSON.stringify({ Date: "asdfas" }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) { alert(data); },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+</script>
