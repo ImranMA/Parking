@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Parking.DomainModel;
-using Parking.Interfaces;
 using Parking.Interfaces.Application;
-using Parking.Web.Models.Behaviour;
 using Parking.Web.Models.Properties;
+using static Parking.Web.Models.Properties.ParkingRatesResourceModel;
 
 namespace Parking.Web.Controllers
 {
@@ -20,7 +16,7 @@ namespace Parking.Web.Controllers
         private readonly IParkingRatesCalculator _parkingRatesCalculator;
         private readonly IMapper _mapper;
 
-        private ParkingController(IParkingRatesCalculator parkingRatesCalculator, IMapper mapper)
+        public ParkingController(IParkingRatesCalculator parkingRatesCalculator, IMapper mapper)
         {
             this._parkingRatesCalculator = parkingRatesCalculator;
             this._mapper = mapper;
@@ -28,13 +24,12 @@ namespace Parking.Web.Controllers
         
 
         [HttpPost]
-        public async Task<IActionResult> Post(string Date)
+        public async Task<IActionResult> Post(DateTime Start, DateTime End)
         {
-            var serviceResult = await _parkingRatesCalculator.Calculations(DateTime.Now, DateTime.Now.AddHours(5));
+            var serviceResult = await _parkingRatesCalculator.Calculations(Start, End);
             var mappedResource = _mapper.Map<ParkingRates,ParkingRatesResourceModel>(serviceResult);
-            return Ok(mappedResource);
-            
-        }
 
+            return Ok(mappedResource);            
+        }        
     }
 }

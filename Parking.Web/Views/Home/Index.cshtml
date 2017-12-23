@@ -2,54 +2,102 @@
     ViewData["Title"] = "Home Page";
 }
 
-<br />
 <div>
-    <p>Entry:</p>
-    <input type="text" id="entrydatetime24" data-format="DD-MM-YYYY HH:mm" data-template="DD / MM / YYYY     HH : mm" name="datetime">
-
-</div>
-
-<br />
-
-<div>
-    <p>Exit:</p>
-    <input type="text" id="exitdatetime24" data-format="DD-MM-YYYY HH:mm" data-template="DD / MM / YYYY     HH : mm" name="datetime">
+    <p><h4>Please Note Max Duration for a stay is 96 hours , for long term parking please contact helpline</h4></p>
+    <br />
 </div>
 
 
-<div><button type="button" onclick="PostDates();">Submit</button></div>
+<div>
+    <div class="form-group">
+        <label>Entry</label>
+        <input type="text" class="form-control" id="EntryDateTime" data-format="DD-MM-YYYY HH:mm" data-template="DD / MM / YYYY     HH : mm" name="datetime">
+    </div>
+    <div class="form-group">
+        <label>Exit</label>
+        <input type="text" class="form-control" id="ExitDateTime" data-format="DD-MM-YYYY HH:mm" data-template="DD / MM / YYYY     HH : mm" name="datetime">
+    </div>
+    <button type="button" class="btn btn-default" onclick="postData();">Submit</button>
+</div>
+
+<div>
+    <div class="form-group">
+    </div>
+    <div class="form-group">
+        <p><label id="lbl_StartDate"></label></p>
+        <label id="lbl_EndDate"></label>
+    </div>  
+    <div class="form-group">
+        <label id="result"></label>
+    </div>
+</div>
+
+
 <script>
     $(function () {
-        $('#entrydatetime24').combodate({
+        $('#EntryDateTime').combodate({
+            minuteStep: 1,
+            firstItem: 'name',
+            maxYear: 2020,
+        });
+        $('#ExitDateTime').combodate({
             minuteStep: 1,
             firstItem: 'name',
             maxYear: 2020,
         });
 
-        $('#exitdatetime24').combodate({
-            minuteStep: 1,
-            firstItem: 'name',
-            maxYear: 2020,
-        });
-
-        //$('#exitdatetime24').combodate('getValue');
-        $('#entrydatetime24').combodate('setValue', new Date());
-        $('#exitdatetime24').combodate('setValue', new Date());
+        //Initialize with Current Date
+        $('#EntryDateTime').combodate('setValue', new Date());
+        $('#ExitDateTime').combodate('setValue', new Date().setHours(new Date().getHours() + 1));
     });
 
-    function PostDates() {
-       
-        
-        debugger
+    function ClearAll() {
+        $("#lbl_StartDate").text("");
+        $("#lbl_EndDate").text("");
+        $("#result").text("");
+    }
+
+    function PopulateResult(data) {
+        $("#lbl_StartDate").html("Entry: " + $('#EntryDateTime').combodate('getValue'));
+        $("#lbl_EndDate").html("Exit: " + $('#ExitDateTime').combodate('getValue'));
+        $("#result").html("Rate Type :" + data.name + " <br /> <br /> Total Price :" + data.price);
+    }
+
+    function isValidDate(start, end) {
+
+        var startDate = moment(start, "DD-MM-YYYY hh:mm")
+        var endDate = moment(end, "DD-MM-YYYY hh:mm");
+
+        var duration = moment.duration(endDate.diff(startDate));
+        var hours = duration.asHours();
+
+        return (hours < 96 && moment(endDate).isAfter(startDate))
+    }
+
+    function postData() {
+
+        var startDateTime = $('#EntryDateTime').combodate('getValue');
+        var endDateTime = $('#ExitDateTime').combodate('getValue');
+
+        ClearAll();
+
+        if (!isValidDate(startDateTime, endDateTime)) {
+            $("#result").text("Please Enter Valid Duration");
+            return;
+        }
+        var dateData = {
+            'Start': startDateTime,
+            'End': endDateTime
+        };
+
         $.ajax({
-            type: "POST",
-            url: "/api/parking",
-            data: JSON.stringify({ Date: "asdfas" }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) { alert(data); },
-            failure: function (errMsg) {
-                alert(errMsg);
+            type: 'POST',
+            url: '/api/parking',
+            data: dateData,
+            success: function (data) {
+                PopulateResult(data);
+            },
+            error: function () {
             }
         });
     }

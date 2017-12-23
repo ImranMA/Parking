@@ -22,12 +22,11 @@ namespace Parking.Domain.Operations
 
         public async Task<ParkingRates> Calculations(DateTime Start, DateTime End)
         {
-            //Check if Qualifies for the FlatRates
+            //Check if patron qualifies for FlatRates
             var parkingRate = await HasFlatRate(Start, End);
 
-            //If patron doesn't qualify for FlatRate
-            if (parkingRate.Price == 0)
-                //Else Calulate based on the normal rates
+            //If patron doesn't qualify for FlatRates , calculate on hourly rate 
+            if (parkingRate.Price == 0)                
                 parkingRate = await HasNormalRate(Start, End);
 
             return parkingRate;
@@ -36,45 +35,51 @@ namespace Parking.Domain.Operations
 
         public async Task<ParkingRates> HasFlatRate(DateTime start, DateTime end)
         {
+            ParkingRates parkingDomailModel = new ParkingRates();
+
             var serviceFlatRatesList = await _parkingRatesRepository.GetAllFlatRates();
 
             var parkingRatesDomainObject = serviceFlatRatesList.AsEnumerable().Where
             (item => DoesFallIntoTheTimeRang(item.Entry, start.TimeOfDay) == true && DoesFallIntoTheTimeRang(item.Exit, end.TimeOfDay) == true &&
              item.Days.Contains(((WeekDays)start.DayOfWeek)) && item.Days.Contains(((WeekDays)end.DayOfWeek))).
             Select(item => item);
-
-
-            ParkingRates parkingResourceModel = new ParkingRates();
-
+            
 
             if (parkingRatesDomainObject.Any())
             {
-                parkingResourceModel = parkingRatesDomainObject.FirstOrDefault();
+                parkingDomailModel = parkingRatesDomainObject.FirstOrDefault();
+                parkingDomailModel.Name = Enum.GetName(typeof(RateCategory), parkingDomailModel.Category);
             }
 
-            return parkingResourceModel;
+            return parkingDomailModel;
         }
 
         public async Task<ParkingRates> HasNormalRate(DateTime start, DateTime end)
         {
+            ParkingRates parkingDomailModel = new ParkingRates();
             double hoursStayed = Math.Ceiling((double)(end - start).TotalMinutes / 60);
             var serviceHourlyRatesList = await _parkingRatesRepository.GetAllHourlyRates();
 
-            var parkingDTO = serviceHourlyRatesList.AsEnumerable().Where
+
+            var parkingRatesDomainObject = serviceHourlyRatesList.AsEnumerable().Where
             (item => (hoursStayed > item.Hours.minHoursStayed) && (hoursStayed <= item.Hours.maxHoursStayed)).
             Select(item => item);
+                        
 
-            ParkingRates parkingResourceModel = new ParkingRates();
-
-            if (parkingDTO.Any())
+            if (parkingRatesDomainObject.Any())
             {
-                parkingResourceModel = parkingDTO.FirstOrDefault();
+                parkingDomailModel = parkingRatesDomainObject.FirstOrDefault();
+                parkingDomailModel.Name = Enum.GetName(typeof(RateCategory), parkingDomailModel.Category);
+
+                //If the stay is more than 24 hours thne multiply rest of the days with daily rate, 
+                if (hoursStayed > 24)
+                    parkingDomailModel.Price = Math.Ceiling((double)hoursStayed / 24) * parkingDomailModel.Price;
             }
 
-            return parkingResourceModel;
+            return parkingDomailModel;
         }
-
-        public bool DoesFallIntoTheTimeRang(StaySpanFlatRate StayLengh, TimeSpan TimeToCompareInRange)
+            
+        public bool DoesFallIntoTheTimeRang(StayDurationFlatRate StayLengh, TimeSpan TimeToCompareInRange)
         {
             TimeSpan start = StayLengh.Start;
             TimeSpan end = StayLengh.End;

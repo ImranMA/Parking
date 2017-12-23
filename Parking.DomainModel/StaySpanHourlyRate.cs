@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Parking.DomainModel
 {
-    public class StaySpanHourlyRate
+    public class StayDurationHourlyRate
     {
         public int minHoursStayed { get; set; }
         public int maxHoursStayed { get; set; }

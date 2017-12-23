@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Parking.Domain.Operations;
 using Parking.Interfaces;
+using Parking.Interfaces.Application;
 using Parking.Repository;
 using Parking.Repository.DataStore;
 
@@ -14,8 +16,6 @@ namespace Web
 {
     public class Startup
     {
-
-
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -39,9 +39,8 @@ namespace Web
             services.AddSingleton<IConfiguration>(Configuration);
 
             //Registering Application Dependencis            
-            services.AddTransient<IParkingRates, ParkingRates>();
-            services.AddTransient<IParkingRatesData, RatesDataList>();
-            services.AddTransient<IParkingRatesData, RatesDataList>();
+            services.AddTransient<IParkingRates, ParkingRatesReporsitory>();            
+            services.AddTransient<IParkingRatesCalculator, ParkingRatesCalculator>();
             
 
             //AutoMapper initialization and configuration

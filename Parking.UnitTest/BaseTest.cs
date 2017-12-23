@@ -7,7 +7,7 @@ using Parking.Web.Models.Properties;
 
 namespace Parking.UnitTest
 {
-    public class TestDTO
+    public class TESTDomainObject
     {
         public DateTime Entry { get; set; }
         public DateTime Exit { get; set; }

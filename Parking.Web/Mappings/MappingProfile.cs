@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Parking.DomainModel;
 using Parking.Web.Models.Properties;
+using static Parking.Web.Models.Properties.ParkingRatesResourceModel;
 
 namespace Web
 {
-
-
     public class MappingProfile : Profile
     {
         //AutoMapper mapping profile registration, called from startup.cs
         public MappingProfile()
-        {            
+        {
             //DomainModel to ResourceModel Mapping
-            CreateMap<ParkingRates, ParkingRatesResourceModel>();       
+            CreateMap<ParkingRates, ParkingRatesResourceModel>();             
         }
 
     }

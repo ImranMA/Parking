@@ -4,27 +4,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Parking.DomainModel;
 using Parking.Interfaces;
-
+using Parking.Repository.DataStore;
 
 namespace Parking.Repository
 {
-    public class ParkingRates : IParkingRates
-    {
-        private readonly IParkingRatesData _parkingRatesData;
+    public class ParkingRatesReporsitory : IParkingRates
+    {               
 
-        public ParkingRates(IParkingRatesData parkingRatesData)
+        //Get Flate Rates from Data Store
+        public async Task<IEnumerable<ParkingRates>> GetAllFlatRates()
         {
-            this._parkingRatesData = parkingRatesData;
+            return await RatesData.FlatRatesData();
         }
 
-        public async Task<IEnumerable<DomainModel.ParkingRates>> GetAllFlatRates()
-        {
-            return await _parkingRatesData.FlatRatesData();
-        }
 
-        public async Task<IEnumerable<DomainModel.ParkingRates>> GetAllHourlyRates()
+        //Get Hourly Rates from Data Store
+        public async Task<IEnumerable<ParkingRates>> GetAllHourlyRates()
         {
-            return await _parkingRatesData.HourlyRatesData();
+            return await RatesData.HourlyRatesData();
         }
     }
 }

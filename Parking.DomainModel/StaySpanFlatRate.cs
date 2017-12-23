@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Parking.DomainModel
 {
-    public class StaySpanFlatRate
+    public class StayDurationFlatRate
     {
         public TimeSpan Start { get; set; }
         public TimeSpan End { get; set; }
