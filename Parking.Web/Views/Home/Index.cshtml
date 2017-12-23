@@ -3,7 +3,7 @@
 }
 
 <div>
-    <p><h4>Please Note Max Duration for a stay is 96 hours , for long term parking please contact helpline</h4></p>
+    <p><h4>Please Note Max Parking Duration is 96 hours , for long term parking please contact helpline</h4></p>
     <br />
 </div>
 
@@ -60,7 +60,7 @@
     function PopulateResult(data) {
         $("#lbl_StartDate").html("Entry: " + $('#EntryDateTime').combodate('getValue'));
         $("#lbl_EndDate").html("Exit: " + $('#ExitDateTime').combodate('getValue'));
-        $("#result").html("Rate Type :" + data.name + " <br /> <br /> Total Price :" + data.price);
+        $("#result").html("Rate :" + data.name + " <br /> <br /> Total Price :" + data.price);
     }
 
     function isValidDate(start, end) {

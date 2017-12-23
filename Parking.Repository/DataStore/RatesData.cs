@@ -22,6 +22,7 @@ namespace Parking.Repository.DataStore
                 {
                     Category = RateCategory.EARLY_BIRD,
                     Price = 13,
+                    
                     //Entry Time Condition 06:00 - 09:00
                     Entry = new DurationFlatRates { Start = new TimeSpan(6, 0, 0), End = new TimeSpan(9, 0, 0) },
 
@@ -77,6 +78,7 @@ namespace Parking.Repository.DataStore
                 {
                     Category = RateCategory.STANDARD,
                     Price = 5,
+                   
                     //Hours 0 - 1
                     Hours = new DurationHourlyRates(){MinHours =0 , MaxHours =1},
                     Days = new List<WeekDays>()
@@ -86,6 +88,7 @@ namespace Parking.Repository.DataStore
                 {
                     Category = RateCategory.STANDARD,
                     Price = 10,
+                    
                     //Hours 1 - 2
                     Hours = new DurationHourlyRates(){MinHours =1 , MaxHours =2},
                     Days = new List<WeekDays>()
@@ -95,6 +98,7 @@ namespace Parking.Repository.DataStore
                 {
                     Category = RateCategory.STANDARD,
                     Price = 15,
+                    
                     //Hours 2 - 3
                     Hours = new DurationHourlyRates(){MinHours =2 , MaxHours =3},
                     Days = new List<WeekDays>()
@@ -104,6 +108,7 @@ namespace Parking.Repository.DataStore
                 {
                     Category = RateCategory.STANDARD,
                     Price = 20,
+                    
                     //Hours 3+ - 4days
                     Hours = new DurationHourlyRates(){MinHours =3 , MaxHours =96},
                     Days = new List<WeekDays>()

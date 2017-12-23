@@ -16,6 +16,8 @@ namespace Parking.Web.Controllers
         private readonly IParkingRatesCalculator _parkingRatesCalculator;
         private readonly IMapper _mapper;
 
+
+        //Injecting Dependencies
         public ParkingController(IParkingRatesCalculator parkingRatesCalculator, IMapper mapper)
         {
             this._parkingRatesCalculator = parkingRatesCalculator;
@@ -28,7 +30,7 @@ namespace Parking.Web.Controllers
         {
             //Controller call to Domain operations Service
             var serviceResult = await _parkingRatesCalculator.Calculations(Start, End);
-
+            
             //Domain Model to Resource Mapping
             var mappedResourceObject = _mapper.Map<ParkingRates,ParkingRatesResourceModel>(serviceResult);
 

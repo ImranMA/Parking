@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Parking.DomainModel
 {
+   
     public class ParkingRates
     {
         public string Name { get; set; }

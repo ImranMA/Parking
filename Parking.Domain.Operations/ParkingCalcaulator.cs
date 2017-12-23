@@ -19,8 +19,8 @@ namespace Parking.Domain.Operations
             this._parkingRatesRepository = parkingRatesRepository;            
         }
      
-        //Parking Calculations - The method check the parking rates both in Flat and Hourly 
-        //and return whereever the given duration Falls
+        //Parking Calculations - The method checks for parking rates both in Flat and Hourly data list
+        //and returns where ever the given duration Falls
         public async Task<ParkingRates> Calculations(DateTime Start, DateTime End)
         {
             //Check if patron qualifies for FlatRates
@@ -39,8 +39,10 @@ namespace Parking.Domain.Operations
             ParkingRates objParkingRates = new ParkingRates();
 
             var serviceFlatRatesList = await _parkingRatesRepository.GetAllFlatRates();
-            
-            //Compare the given duration in FlatRates List
+
+            //Compare the given duration in FlatRates List - The expression is checking the selected Entry and Exit duration
+            //Range in the FlatRates List, it matches the day of the week and time
+
             var parkingRatesDomainObject = serviceFlatRatesList.AsEnumerable().Where
             (item => CheckFlatRateDuration(item.Entry, start.TimeOfDay) == true && CheckFlatRateDuration(item.Exit, end.TimeOfDay) == true &&
              item.Days.Contains(((WeekDays)start.DayOfWeek)) && item.Days.Contains(((WeekDays)end.DayOfWeek))).
@@ -79,7 +81,7 @@ namespace Parking.Domain.Operations
             {
                 objParkingRates = parkingRatesDomainObject.FirstOrDefault();
 
-                //Pick the Name
+                //Pick the Rate Name
                 objParkingRates.Name = Enum.GetName(typeof(RateCategory), objParkingRates.Category);
 
                 //If the stay is more than 24 hours then multiply rest of the days with daily rate, 
@@ -89,9 +91,11 @@ namespace Parking.Domain.Operations
 
             return objParkingRates;
         }
-        
-        
-        //Check if selected time falls into the Flat Rates time duration range (Entry or Exit Range)        
+
+
+        //Check if selected duration falls into the Flat Rates time duration range (Entry and Exit )       
+        //e.g. If Entry time is selected 07:00AM the method will return true as given GivenFlatRatesRange parameter 
+        //for Early Bird is between 06:00 - 09:00
         public bool CheckFlatRateDuration(DurationFlatRates GivenFlatRatesRange, TimeSpan SelectedTime)
         {
             TimeSpan start = GivenFlatRatesRange.Start;

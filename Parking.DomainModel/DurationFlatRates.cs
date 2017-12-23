@@ -7,7 +7,6 @@ namespace Parking.DomainModel
     public class DurationFlatRates
     {
         public TimeSpan Start { get; set; }
-        public TimeSpan End { get; set; }
-        
+        public TimeSpan End { get; set; }        
     }
 }
