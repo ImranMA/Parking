@@ -8,6 +8,7 @@ namespace Parking.Interfaces.Application
 {
     public interface IParkingRatesCalculator
     {
+        //Method to calculate the parking rates for given duration
         Task<ParkingRates> Calculations(DateTime start, DateTime end);
     }
 }

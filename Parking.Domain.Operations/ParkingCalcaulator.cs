@@ -18,77 +18,90 @@ namespace Parking.Domain.Operations
         {
             this._parkingRatesRepository = parkingRatesRepository;            
         }
-
-
+     
+        //Parking Calculations - The method check the parking rates both in Flat and Hourly 
+        //and return whereever the given duration Falls
         public async Task<ParkingRates> Calculations(DateTime Start, DateTime End)
         {
             //Check if patron qualifies for FlatRates
-            var parkingRate = await HasFlatRate(Start, End);
+            var parkingRate = await CalculateFlatRates(Start, End);
 
             //If patron doesn't qualify for FlatRates , calculate on hourly rate 
             if (parkingRate.Price == 0)                
-                parkingRate = await HasNormalRate(Start, End);
+                parkingRate = await CalculateHourlyRates(Start, End);
 
             return parkingRate;
         }
-
-
-        public async Task<ParkingRates> HasFlatRate(DateTime start, DateTime end)
+        
+        //Calculate the FlatRates between given range
+        public async Task<ParkingRates> CalculateFlatRates(DateTime start, DateTime end)
         {
-            ParkingRates parkingDomailModel = new ParkingRates();
+            ParkingRates objParkingRates = new ParkingRates();
 
             var serviceFlatRatesList = await _parkingRatesRepository.GetAllFlatRates();
-
+            
+            //Compare the given duration in FlatRates List
             var parkingRatesDomainObject = serviceFlatRatesList.AsEnumerable().Where
-            (item => DoesFallIntoTheTimeRang(item.Entry, start.TimeOfDay) == true && DoesFallIntoTheTimeRang(item.Exit, end.TimeOfDay) == true &&
+            (item => CheckFlatRateDuration(item.Entry, start.TimeOfDay) == true && CheckFlatRateDuration(item.Exit, end.TimeOfDay) == true &&
              item.Days.Contains(((WeekDays)start.DayOfWeek)) && item.Days.Contains(((WeekDays)end.DayOfWeek))).
             Select(item => item);
             
-
+            //If the duration falls into FlatRates
             if (parkingRatesDomainObject.Any())
             {
-                parkingDomailModel = parkingRatesDomainObject.FirstOrDefault();
-                parkingDomailModel.Name = Enum.GetName(typeof(RateCategory), parkingDomailModel.Category);
+                objParkingRates = parkingRatesDomainObject.FirstOrDefault(); 
+                
+                //Pick the Name of FlatRates category
+                objParkingRates.Name = Enum.GetName(typeof(RateCategory), objParkingRates.Category);
             }
 
-            return parkingDomailModel;
+            return objParkingRates;
         }
 
-        public async Task<ParkingRates> HasNormalRate(DateTime start, DateTime end)
+        //Calculate the Hourly Rates between given range
+        public async Task<ParkingRates> CalculateHourlyRates(DateTime start, DateTime end)
         {
-            ParkingRates parkingDomailModel = new ParkingRates();
+            ParkingRates objParkingRates = new ParkingRates();
+
+            //The fraction of next hour converted to full hour e.g. 1.3 hours mean 2 hours
             double hoursStayed = Math.Ceiling((double)(end - start).TotalMinutes / 60);
+
+            //Get the Hourly Rates List
             var serviceHourlyRatesList = await _parkingRatesRepository.GetAllHourlyRates();
 
-
+            //Compare the given duration in FlatRates List
             var parkingRatesDomainObject = serviceHourlyRatesList.AsEnumerable().Where
-            (item => (hoursStayed > item.Hours.minHoursStayed) && (hoursStayed <= item.Hours.maxHoursStayed)).
-            Select(item => item);
-                        
+            (item => (hoursStayed > item.Hours.MinHours) && (hoursStayed <= item.Hours.MaxHours)).
+            Select(item => item);                     
 
+            //If duration falls into hourly rate range
             if (parkingRatesDomainObject.Any())
             {
-                parkingDomailModel = parkingRatesDomainObject.FirstOrDefault();
-                parkingDomailModel.Name = Enum.GetName(typeof(RateCategory), parkingDomailModel.Category);
+                objParkingRates = parkingRatesDomainObject.FirstOrDefault();
 
-                //If the stay is more than 24 hours thne multiply rest of the days with daily rate, 
+                //Pick the Name
+                objParkingRates.Name = Enum.GetName(typeof(RateCategory), objParkingRates.Category);
+
+                //If the stay is more than 24 hours then multiply rest of the days with daily rate, 
                 if (hoursStayed > 24)
-                    parkingDomailModel.Price = Math.Ceiling((double)hoursStayed / 24) * parkingDomailModel.Price;
+                    objParkingRates.Price = Math.Ceiling((double)hoursStayed / 24) * objParkingRates.Price;
             }
 
-            return parkingDomailModel;
+            return objParkingRates;
         }
-            
-        public bool DoesFallIntoTheTimeRang(StayDurationFlatRate StayLengh, TimeSpan TimeToCompareInRange)
+        
+        
+        //Check if selected time falls into the Flat Rates time duration range (Entry or Exit Range)        
+        public bool CheckFlatRateDuration(DurationFlatRates GivenFlatRatesRange, TimeSpan SelectedTime)
         {
-            TimeSpan start = StayLengh.Start;
-            TimeSpan end = StayLengh.End;
-            TimeSpan now = TimeToCompareInRange;
+            TimeSpan start = GivenFlatRatesRange.Start;
+            TimeSpan end = GivenFlatRatesRange.End;
+            TimeSpan selected = SelectedTime;
 
             if (start <= end)
             {
                 // start and stop times are in the same day
-                if (now >= start && now <= end)
+                if (selected >= start && selected <= end)
                 {
                     return true;
                 }
@@ -96,7 +109,7 @@ namespace Parking.Domain.Operations
             else
             {
                 // start and stop times are in different days
-                if (now >= start || now <= end)
+                if (selected >= start || selected <= end)
                 {
                     return true;
                 }

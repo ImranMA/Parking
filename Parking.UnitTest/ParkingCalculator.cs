@@ -14,8 +14,7 @@ namespace Parking.UnitTest
     {        
         private IParkingRatesCalculator _ParkingCalculator;
         private IParkingRates _parkingRates;        
-      
-        
+           
 
         public ParkingCalculator()
         {            
@@ -24,7 +23,7 @@ namespace Parking.UnitTest
         }
 
         [Fact]
-        public async Task GIVEN_WEEKEND__RETURNFLATRATE()
+        public async Task GIVEN_WEEKEND_CASE_RETURN_FLATRATE()
         {
             List<TESTDomainObject> testCases = new List<TESTDomainObject>()
             {
@@ -48,11 +47,9 @@ namespace Parking.UnitTest
                 Assert.Equal(returnResult.Name.ToString(), c.Expected.Name.ToString());
             }
         }
-
-
-
+        
         [Fact]
-        public async Task GIVEN_EARLYBIRD__RETURN_FLATRATE()
+        public async Task GIVEN_EARLYBIRD_CASE_RETURN_FLATRATE()
         {
             List<TESTDomainObject> testCases = new List<TESTDomainObject>()
             {
@@ -75,10 +72,9 @@ namespace Parking.UnitTest
                 Assert.Equal(returnResult.Name.ToString(), c.Expected.Name.ToString());
             }
         }
-
-
+        
         [Fact]
-        public async Task GIVEN_NIGHT__RETURN_FLATRATE()
+        public async Task GIVEN_NIGHT_CASE__RETURN_FLATRATE()
         {
             List<TESTDomainObject> testCases = new List<TESTDomainObject>()
             {
@@ -87,7 +83,8 @@ namespace Parking.UnitTest
                    Exit = new DateTime(2017, 12, 23, 05, 0, 0),
                    Expected = new ParkingRates { Name ="NIGHT" , Price = 6.5  }
               },
-              //Special case when night falls into weekend
+
+              //Special case when friday night falls into weekend
               new TESTDomainObject()
               {    Entry = new DateTime(2017, 12, 22, 19, 0, 0),
                    Exit = new DateTime(2017, 12, 23, 05, 0, 0),
@@ -101,14 +98,10 @@ namespace Parking.UnitTest
                 Assert.Equal(returnResult.Name.ToString(), c.Expected.Name.ToString());
             }
         }
-
-
-
+        
         [Fact]
-        public async Task NormalRates()
-        {
-            //this.parkingCal = new ParkingRatesCalculator(_parkingRates, _Mapper);
-
+        public async Task GIVEN_DURATION_NOTUNDER_FLATRATES_RETURN_STANDARD_RATES()
+        {           
 
             List<TESTDomainObject> testCases = new List<TESTDomainObject>()
             {

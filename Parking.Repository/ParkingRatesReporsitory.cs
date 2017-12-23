@@ -13,14 +13,14 @@ namespace Parking.Repository
 
         //Get Flate Rates from Data Store
         public async Task<IEnumerable<ParkingRates>> GetAllFlatRates()
-        {
+        {            
             return await RatesData.FlatRatesData();
         }
 
 
         //Get Hourly Rates from Data Store
         public async Task<IEnumerable<ParkingRates>> GetAllHourlyRates()
-        {
+        {         
             return await RatesData.HourlyRatesData();
         }
     }

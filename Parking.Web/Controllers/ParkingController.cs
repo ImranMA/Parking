@@ -26,10 +26,13 @@ namespace Parking.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(DateTime Start, DateTime End)
         {
+            //Controller call to Domain operations Service
             var serviceResult = await _parkingRatesCalculator.Calculations(Start, End);
-            var mappedResource = _mapper.Map<ParkingRates,ParkingRatesResourceModel>(serviceResult);
 
-            return Ok(mappedResource);            
+            //Domain Model to Resource Mapping
+            var mappedResourceObject = _mapper.Map<ParkingRates,ParkingRatesResourceModel>(serviceResult);
+
+            return Ok(mappedResourceObject);            
         }        
     }
 }

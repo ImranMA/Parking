@@ -8,10 +8,10 @@ namespace Parking.Interfaces
 {
     public interface IParkingRates
     {
-        //Get All FlatParking Rates
+        //Fetch All Flat Rates from Data store
         Task<IEnumerable<ParkingRates>> GetAllFlatRates();
 
-        //Get All Hourly Parking Rates
+        //Fetch All Hourly Rates from Data Store
         Task<IEnumerable<ParkingRates>> GetAllHourlyRates();
     }
 }

@@ -9,9 +9,9 @@ namespace Parking.DomainModel
         public string Name { get; set; }
         public RateCategory Category { get; set; }
         public RateType Type { get; set; }
-        public StayDurationFlatRate Entry { get; set; }
-        public StayDurationFlatRate Exit { get; set; }
-        public StayDurationHourlyRate Hours { get; set; }        
+        public DurationFlatRates Entry { get; set; }
+        public DurationFlatRates Exit { get; set; }
+        public DurationHourlyRates Hours { get; set; }        
         public List<WeekDays> Days { get; set; }
         public double Price { get; set; }
         
