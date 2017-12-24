@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +33,15 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Setting up the Culture
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-AU");
+                options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-AU"), new CultureInfo("en-AU") };
+                options.RequestCultureProviders.Clear();
+            });
+
+
             // Add framework services.
             services.AddMvc();
             
@@ -75,8 +86,9 @@ namespace Web
             app.UseStaticFiles();
 
 
-            
-            
+
+            app.UseRequestLocalization();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
