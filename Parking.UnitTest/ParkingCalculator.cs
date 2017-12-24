@@ -81,8 +81,8 @@ namespace Parking.UnitTest
             List<TestDomainObject> testCases = new List<TestDomainObject>()
             {
               new TestDomainObject()
-              {    Entry = new DateTime(2017, 12, 21, 19, 0, 0),// 22/12/2017 19:00 Thursday
-                   Exit = new DateTime(2017, 12, 22, 05, 0, 0), // 23/12/2017 05:00 Thursday
+              {    Entry = new DateTime(2017, 12, 21, 19, 0, 0),// 21/12/2017 19:00 Thursday
+                   Exit = new DateTime(2017, 12, 22, 05, 0, 0), // 22/12/2017 05:00 Friday
                    Expected = new ParkingRates { Name ="NIGHT" , Price = 6.5  }
               },
 
@@ -133,7 +133,7 @@ namespace Parking.UnitTest
               { 
                    //Duration 3 hours
                    Entry = new DateTime(2017, 12, 22, 10, 0, 0),//22/12/2017 10:00 Fri
-                   Exit = new DateTime(2017, 12, 22, 13, 0, 0),//22/12/2017 12:00 Fri
+                   Exit = new DateTime(2017, 12, 22, 13, 0, 0),//22/12/2017 13:00 Fri
                    Expected = new ParkingRates { Name ="STANDARD" , Price = 15  }
               },
 
