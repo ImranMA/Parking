@@ -20,7 +20,7 @@ namespace Parking.Domain.Operations
         }
      
         //Parking Calculations - The method checks for parking rates both in Flat and Hourly data list
-        //and returns where ever the given duration Falls
+        //and returns where in the given duration Falls
         public async Task<ParkingRates> Calculations(DateTime Start, DateTime End)
         {
             //Check if patron qualifies for FlatRates

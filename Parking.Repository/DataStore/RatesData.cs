@@ -9,7 +9,7 @@ using static Parking.DomainModel.ParkingRates;
 
 namespace Parking.Repository.DataStore
 {
-    //The Data stopre contains all the rates values
+    //The Data store contains all the rates values
     public static class RatesData    {
 
 
