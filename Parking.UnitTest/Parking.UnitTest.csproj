@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Parking.Domain.Services\Parking.Domain.Services.csproj" />
     <ProjectReference Include="..\Parking.DomainModel\Parking.DomainModel.csproj" />
     <ProjectReference Include="..\Parking.Interfaces\Parking.Interfaces.csproj" />
     <ProjectReference Include="..\Parking.Repository\Parking.Repository.csproj" />

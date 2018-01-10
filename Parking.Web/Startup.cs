@@ -1,19 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Parking.Domain.Services;
 using Parking.Interfaces;
 using Parking.Interfaces.Application;
 using Parking.Interfaces.ApplicationLayer_Interface;
 using Parking.Repository;
-using Parking.Repository.DataStore;
 
 namespace Web
 {

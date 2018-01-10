@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parking.Web", "Parking.Web\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parking.UnitTest", "Parking.UnitTest\Parking.UnitTest.csproj", "{C2CFA673-6C54-4B33-9DC6-545D4BA1639C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parking.Domain.Services", "Parking.Domain.Operations\Parking.Domain.Services.csproj", "{268FF390-AAB3-4802-9B85-FF0758D821D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parking.Domain.Services", "Parking.Domain.Services\Parking.Domain.Services.csproj", "{268FF390-AAB3-4802-9B85-FF0758D821D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
