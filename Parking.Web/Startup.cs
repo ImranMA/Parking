@@ -8,9 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using Parking.Domain.Operations;
+using Parking.Domain.Services;
 using Parking.Interfaces;
 using Parking.Interfaces.Application;
+using Parking.Interfaces.ApplicationLayer_Interface;
 using Parking.Repository;
 using Parking.Repository.DataStore;
 
@@ -52,7 +53,11 @@ namespace Web
             //Registering Application Dependencis            
             services.AddTransient<IParkingRates, ParkingRatesReporsitory>();            
             services.AddTransient<IParkingRatesCalculator, ParkingRatesCalculator>();
-            
+
+
+            services.AddTransient<IHourlyRates, HourlyRates>();
+            services.AddTransient<IFlatRates, FlatRates>();
+
 
             //AutoMapper initialization and configuration
             var config = new AutoMapper.MapperConfiguration(cfg =>

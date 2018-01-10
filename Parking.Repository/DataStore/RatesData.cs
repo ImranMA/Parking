@@ -16,7 +16,7 @@ namespace Parking.Repository.DataStore
         //Return all FlatRates
         public static Task<List<ParkingRates>> FlatRatesData()
         {
-            return Task.Run(() => new List<ParkingRates>
+            return Task.FromResult(new List<ParkingRates>
             {
                 new ParkingRates()
                 {
@@ -30,8 +30,8 @@ namespace Parking.Repository.DataStore
                     Exit =  new DurationFlatRates{ Start = new TimeSpan(15, 30, 0), End = new TimeSpan(23, 30, 0) },
                     
                    //Days Allowed
-                    Days = new List<WeekDays>()
-                    { WeekDays.Monday, WeekDays.Tuesday,WeekDays.Wednesday,WeekDays.Thursday,WeekDays.Friday}
+                    Days = new List<DayOfWeek>()
+                    { DayOfWeek.Monday, DayOfWeek.Tuesday,DayOfWeek.Wednesday,DayOfWeek.Thursday,DayOfWeek.Friday}
                 },
 
                 new ParkingRates()
@@ -46,8 +46,8 @@ namespace Parking.Repository.DataStore
                     Exit = new DurationFlatRates { Start = new TimeSpan(0, 0, 0), End = new TimeSpan(6, 0, 0) },
 
                     //Days Allowed
-                    Days = new List<WeekDays>()
-                    { WeekDays.Monday, WeekDays.Tuesday,WeekDays.Wednesday,WeekDays.Thursday,WeekDays.Friday, WeekDays.Saturday}
+                    Days = new List<DayOfWeek>()
+                    { DayOfWeek.Monday, DayOfWeek.Tuesday,DayOfWeek.Wednesday,DayOfWeek.Thursday,DayOfWeek.Friday, DayOfWeek.Saturday}
                 },
 
                 new ParkingRates()
@@ -62,8 +62,8 @@ namespace Parking.Repository.DataStore
                     Exit = new DurationFlatRates { Start = new TimeSpan(0, 0, 0), End = new TimeSpan(23, 59, 59) },
 
                     //Days Allowed
-                    Days = new List<WeekDays>()
-                    { WeekDays.Sunday,WeekDays.Saturday}
+                    Days = new List<DayOfWeek>()
+                    { DayOfWeek.Sunday,DayOfWeek.Saturday}
                 }
             });
         }
@@ -72,7 +72,7 @@ namespace Parking.Repository.DataStore
         //Return all Hourly Rates
         public static Task<List<ParkingRates>> HourlyRatesData()
         {
-            return Task.Run(() => new List<ParkingRates>
+            return Task.FromResult(new List<ParkingRates>
             {
                 new ParkingRates()
                 {
@@ -81,8 +81,8 @@ namespace Parking.Repository.DataStore
                    
                     //Hours 0 - 1
                     Hours = new DurationHourlyRates(){MinHours =0 , MaxHours =1},
-                    Days = new List<WeekDays>()
-                   { WeekDays.Monday, WeekDays.Tuesday,WeekDays.Wednesday,WeekDays.Thursday,WeekDays.Friday}
+                    Days = new List<DayOfWeek>()
+                   { DayOfWeek.Monday, DayOfWeek.Tuesday,DayOfWeek.Wednesday,DayOfWeek.Thursday,DayOfWeek.Friday}
                 },
                 new ParkingRates()
                 {
@@ -91,8 +91,8 @@ namespace Parking.Repository.DataStore
                     
                     //Hours 1 - 2
                     Hours = new DurationHourlyRates(){MinHours =1 , MaxHours =2},
-                    Days = new List<WeekDays>()
-                   { WeekDays.Monday, WeekDays.Tuesday,WeekDays.Wednesday,WeekDays.Thursday,WeekDays.Friday}
+                    Days = new List<DayOfWeek>()
+                   { DayOfWeek.Monday, DayOfWeek.Tuesday,DayOfWeek.Wednesday,DayOfWeek.Thursday,DayOfWeek.Friday}
                 },
                 new ParkingRates()
                 {
@@ -101,8 +101,8 @@ namespace Parking.Repository.DataStore
                     
                     //Hours 2 - 3
                     Hours = new DurationHourlyRates(){MinHours =2 , MaxHours =3},
-                    Days = new List<WeekDays>()
-                   { WeekDays.Monday, WeekDays.Tuesday,WeekDays.Wednesday,WeekDays.Thursday,WeekDays.Friday}
+                    Days = new List<DayOfWeek>()
+                   { DayOfWeek.Monday, DayOfWeek.Tuesday,DayOfWeek.Wednesday,DayOfWeek.Thursday,DayOfWeek.Friday}
                 },
                 new ParkingRates()
                 {
@@ -111,8 +111,8 @@ namespace Parking.Repository.DataStore
                     
                     //Hours 3+ - 4days
                     Hours = new DurationHourlyRates(){MinHours =3 , MaxHours =96},
-                    Days = new List<WeekDays>()
-                   { WeekDays.Monday, WeekDays.Tuesday,WeekDays.Wednesday,WeekDays.Thursday,WeekDays.Friday}
+                    Days = new List<DayOfWeek>()
+                   { DayOfWeek.Monday, DayOfWeek.Tuesday,DayOfWeek.Wednesday,DayOfWeek.Thursday,DayOfWeek.Friday}
                 },
             });
         }

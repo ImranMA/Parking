@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Parking.Domain.Operations;
+using Parking.Domain.Services;
 using Parking.DomainModel;
 using Parking.Interfaces;
 using Parking.Interfaces.Application;
-using Parking.Repository.DataStore;
+using Parking.Interfaces.ApplicationLayer_Interface;
+using Parking.Repository;
 using Xunit;
 
 namespace Parking.UnitTest
@@ -13,13 +14,20 @@ namespace Parking.UnitTest
     public class ParkingCalculator : BaseTest
     {        
         private IParkingRatesCalculator _ParkingCalculator;
-        private IParkingRates _parkingRates;        
-           
+        private IParkingRates _parkingRates;
+        private readonly IFlatRates _flatRates;
+        private readonly IHourlyRates _hourlyRates;
+
 
         public ParkingCalculator()
-        {            
-            this._parkingRates = new Parking.Repository.ParkingRatesReporsitory();
-            this._ParkingCalculator = new ParkingRatesCalculator(_parkingRates);                 
+        {
+            
+            this._parkingRates = new ParkingRatesReporsitory();
+
+            _flatRates = new FlatRates(_parkingRates);
+            _hourlyRates = new HourlyRates(_parkingRates);
+
+            this._ParkingCalculator = new ParkingRatesCalculator(_flatRates,_hourlyRates);                 
         }
 
         [Fact]
